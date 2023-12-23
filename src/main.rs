@@ -6,6 +6,8 @@ use termion::raw::IntoRawMode;
 use termion::{color, style};
 use std::io::{Write, stdout, stdin};
 use std::time::Instant;
+use rand::thread_rng;
+use rand::seq::SliceRandom;
 
 fn typing_test(target: &str) -> Result<(), std::io::Error> {
     let stdin = stdin();
@@ -67,10 +69,12 @@ fn main() {
     let file_contents = std::fs::read_to_string("input.txt")
         .expect("Unable to read file");
 
-    let targets = file_contents
+    let mut targets = file_contents
         .lines()
         .filter(|line| line.len() >= MIN_LINE_LENGTH)
         .collect::<Vec<&str>>();
+
+    targets.shuffle(&mut thread_rng());
 
     for target in &targets {
         match typing_test(target) {
