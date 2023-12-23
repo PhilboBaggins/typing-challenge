@@ -61,17 +61,16 @@ fn typing_test(target: &str) -> Result<(), std::io::Error> {
 }
 
 fn main() {
-    let targets = [
-        "abc",
-        "def",
-        "ghi",
-        // "jkl",
-        // "mno",
-        // "pqr",
-        // "stu",
-        // "vwx",
-        // "yz",
-    ];
+    //const MIN_LINE_LENGTH: usize = 64; // Adam's setting
+    const MIN_LINE_LENGTH: usize = 3; // I'm lazy
+
+    let file_contents = std::fs::read_to_string("input.txt")
+        .expect("Unable to read file");
+
+    let targets = file_contents
+        .lines()
+        .filter(|line| line.len() >= MIN_LINE_LENGTH)
+        .collect::<Vec<&str>>();
 
     for target in &targets {
         match typing_test(target) {
