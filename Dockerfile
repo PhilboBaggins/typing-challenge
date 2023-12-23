@@ -1,6 +1,16 @@
-ARG RUST_VERSION=1.74.1
-
-FROM rust:${RUST_VERSION}-slim-bullseye AS builder
+#
+# Build stage
+#
+FROM rust:latest AS builder
+RUN rustup target add x86_64-unknown-linux-musl
 WORKDIR /build
 COPY . .
-CMD ["cargo", "run"]
+RUN cargo build --target x86_64-unknown-linux-musl --locked --release
+
+#
+# Final stage
+#
+FROM scratch
+COPY --from=builder /build/target/x86_64-unknown-linux-musl/release/typing-challenge /
+COPY --from=builder /build/input.txt /
+ENTRYPOINT ["/typing-challenge"]
