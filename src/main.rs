@@ -26,6 +26,7 @@ fn typing_test(target: &str) -> Result<(), std::io::Error> {
     for c in stdin.keys() {
         let input_char = match c {
             Ok(Key::Ctrl('c')) => std::process::exit(0),
+            Ok(Key::Esc) => return Ok(()), // skip this target
             Ok(Key::Char(c)) => c,
             Ok(_) => continue,
             Err(_) => break,
