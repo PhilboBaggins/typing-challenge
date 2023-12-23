@@ -74,7 +74,6 @@ fn main() {
     ];
 
     for target in &targets {
-        println!("Target: {}", target);
         match typing_test(target) {
             Ok(_) => println!("\n"),
             Err(e) => println!("Error: {}", e),
